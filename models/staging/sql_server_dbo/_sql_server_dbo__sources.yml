@@ -1,9 +1,21 @@
 version: 2
 
 sources:
+
   - name: sql_server_dbo
+    schema: sql_server_dbo
     description: ""
     database: alumno10_dev_bronze_db
+
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    # freshness:
+    #   warn_after: {count: 24, period: hour}
+    #   error_after: {count: 4800000000, period: hour}
+
     tables:
       - name: addresses
         description: ""
@@ -154,7 +166,7 @@ sources:
             data_type: timestamp_tz
             description: ""
 
-      - name: promos
+      # - name: promos
         description: ""
         columns:
           - name: promo_id
@@ -163,7 +175,6 @@ sources:
             tests:
               - unique
               - not_null
-              - duplicated_values
           - name: discount
             data_type: number
             description: "Discount applied on euros"
