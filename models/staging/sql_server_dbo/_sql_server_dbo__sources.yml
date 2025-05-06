@@ -30,7 +30,7 @@ sources:
             tests:
               - not_null
               - dbt_utils.expression_is_true:
-                  expression: "REGEXP_LIKE(address, '^[0-9]+ [A-Za-z ]+$') = true"
+                  expression: "REGEXP_LIKE(address, '^[0-9]+\\s+[A-Za-z0-9\\s]+$') = true"
           - name: state
             data_type: varchar
             description: "State or region of the address."

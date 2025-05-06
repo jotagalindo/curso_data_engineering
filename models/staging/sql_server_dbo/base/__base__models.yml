@@ -17,5 +17,61 @@ models:
         data_type: int
       - name: status_id
         data_type: varchar
+      - name: is_deleted
+        data_type: boolean
+      - name: date_load
+        data_type: timestamp_tz
+
+  - name: base_sql_server_dbo__addresses
+    config:
+      materialized: view
+      contract:
+        enforced: true
+    description: >
+      Contains address information including location and postal code.
+    columns:
+      - name: address_id
+        data_type: varchar
+      - name: zipcode
+        data_type: int
+      - name: country
+        data_type: varchar
+      - name: address
+        data_type: varchar
+      - name: state
+        data_type: varchar
+      - name: is_deleted
+        data_type: boolean
+      - name: date_load
+        data_type: timestamp_tz
+
+  - name: base_sql_server_dbo__products
+    description: "Base model for products, adds surrogate key and filters out deleted rows."
+    columns:
+      - name: product_id
+        data_type: varchar
+        description: "Original product ID from source."
+        tests:
+          - not_null
+          - unique
+      - name: price
+        data_type: float
+        description: "Product price in euros."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "price >= 0"
+      - name: name
+        data_type: varchar
+        description: "Product name."
+        tests:
+          - not_null
+      - name: inventory
+        data_type: number
+        description: "Available inventory."
+        tests:
+          - not_null
+      - name: is_deleted
+        data_type: boolean
       - name: date_load
         data_type: timestamp_tz

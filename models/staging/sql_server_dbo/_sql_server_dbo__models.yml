@@ -19,6 +19,59 @@ models:
         data_type: varchar
       - name: date_load
         data_type: timestamp_tz
+      - name: is_deleted
+        data_type: boolean
+
+  - name: stg_sql_server_dbo__addresses
+    config:
+      materialized: view
+      contract:
+        enforced: true
+    description: >
+      Contains address information including location and postal code.
+    columns:
+      - name: address_id
+        data_type: varchar
+      - name: zipcode
+        data_type: int
+      - name: country
+        data_type: varchar
+      - name: address
+        data_type: varchar
+      - name: state
+        data_type: varchar
+      - name: is_deleted
+        data_type: boolean
+      - name: date_load
+        data_type: timestamp_tz
+
+  - name: stg_sql_server_dbo__products
+    config:
+      materialized: view
+      contract:
+        enforced: true
+    description: >
+      Staging model for cleaned product data with surrogate key.
+    columns:
+      - name: product_id
+        data_type: varchar
+        description: "Original ID from the source table."
+      - name: price
+        data_type: float
+        description: "Product price in euros."
+      - name: name
+        data_type: varchar
+        description: "Product name."
+      - name: inventory
+        data_type: number
+        description: "Available quantity in stock."
+      - name: is_deleted
+        data_type: boolean
+      - name: date_load
+        data_type: timestamp_tz
+        description: "Datetime the record was last synced."
+
+
 # Extra stages
   - name: stg_sql_server_dbo__promos_status
     description: >

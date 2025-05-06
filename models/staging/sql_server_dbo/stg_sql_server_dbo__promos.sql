@@ -13,4 +13,5 @@ SELECT
   'No Promo' as promo_description,
   0 as discount,
   {{ dbt_utils.generate_surrogate_key([1]) }} as status_id,
+  false as is_deleted,
   convert_timezone('UTC', GETDATE()) as date_load
