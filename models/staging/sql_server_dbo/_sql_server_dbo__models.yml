@@ -15,7 +15,27 @@ models:
         data_type: varchar
       - name: discount
         data_type: int
-      - name: status
-        data_type: tinyint
-      # - name: _fivetran_synced
-      #   data_type: timestamp_tz
+      - name: status_id
+        data_type: varchar
+      - name: date_load
+        data_type: timestamp_tz
+# Extra stages
+  - name: stg_sql_server_dbo__promos_status
+    description: >
+      Normalized list of promo statuses with a surrogate ID and human-readable description.
+    config:
+      materialized: table
+      contract:
+        enforced: true
+    columns:
+      - name: status_id
+        data_type: varchar
+        description: "Surrogate key representing the promo status (active/inactive)."
+        tests:
+          - unique
+          - not_null
+      - name: status_description
+        data_type: varchar
+        description: "Human-readable status description derived from original promo status ('Active' or 'Inactive')."
+        tests:
+          - not_null
