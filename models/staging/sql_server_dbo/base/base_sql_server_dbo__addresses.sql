@@ -3,7 +3,8 @@ SELECT
   zipcode,
   country,
   address,
-  state,
+  {{ dbt_utils.generate_surrogate_key(['state']) }} AS state_id,
+  state as state_description,
 {{ add_fivetran_metadata() }}
 FROM {{ source('sql_server_dbo', 'addresses') }}
-WHERE _fivetran_deleted IS NULL
+-- WHERE _fivetran_deleted IS NULL

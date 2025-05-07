@@ -17,6 +17,8 @@ models:
         data_type: int
       - name: status_id
         data_type: varchar
+      - name: status_description
+        data_type: varchar
       - name: is_deleted
         data_type: boolean
       - name: date_load
@@ -38,7 +40,9 @@ models:
         data_type: varchar
       - name: address
         data_type: varchar
-      - name: state
+      - name: state_description
+        data_type: varchar
+      - name: state_id
         data_type: varchar
       - name: is_deleted
         data_type: boolean
@@ -94,6 +98,12 @@ models:
 
       - name: event_type
         description: "Type of the event (e.g., click, view)."
+        data_type: varchar
+        tests:
+          - not_null
+      
+      - name: event_type_id
+        description: "ID of the type of the event (e.g., click, view)."
         data_type: varchar
         tests:
           - not_null

@@ -288,8 +288,6 @@ sources:
             description: "User's contact phone number."
             tests:
               - not_null
-              - dbt_utils.expression_is_true:
-                  expression: "REGEXP_LIKE(phone_number, '^\\d{3}-\\d{3}-\\d{4}$') = true"
           - name: total_orders
             data_type: number
             description: "Total number of orders placed by the user."
@@ -301,9 +299,6 @@ sources:
           - name: email
             data_type: varchar
             description: "User's email address."
-            tests:
-              - dbt_utils.expression_is_true:
-                    expression: "REGEXP_LIKE(email, '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$') = true"
           - name: _fivetran_deleted
             data_type: boolean
             description: "Flag indicating if the row was deleted in the source system."

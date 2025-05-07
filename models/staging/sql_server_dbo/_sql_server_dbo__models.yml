@@ -38,7 +38,7 @@ models:
         data_type: varchar
       - name: address
         data_type: varchar
-      - name: state
+      - name: state_id
         data_type: varchar
       - name: is_deleted
         data_type: boolean

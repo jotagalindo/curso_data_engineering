@@ -3,11 +3,7 @@ WITH base AS (
 )
 
 SELECT
-    address_id,
-    zipcode,
-    country,
-    address,
+    DISTINCT
     state_id,
-    is_deleted,
-    date_load
+    state_description
 FROM base
