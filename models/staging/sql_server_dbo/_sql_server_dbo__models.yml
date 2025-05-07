@@ -71,6 +71,49 @@ models:
         data_type: timestamp_tz
         description: "Datetime the record was last synced."
 
+  - name: stg_sql_server_dbo__events
+    description: "Staging model for events data, standardizes and prepares data for analytics."
+    config:
+      materialized: view
+    columns:
+      - name: event_id
+        description: "Original event ID."
+        data_type: varchar
+
+      - name: page_url
+        description: "URL of the page where the event occurred."
+        data_type: varchar
+
+      - name: event_type
+        description: "Type of the event."
+        data_type: varchar
+
+      - name: user_id
+        description: "User associated with the event."
+        data_type: varchar
+
+      - name: product_id
+        description: "Product involved in the event."
+        data_type: varchar
+
+      - name: session_id
+        description: "Session in which the event occurred."
+        data_type: varchar
+
+      - name: created_at
+        description: "Timestamp of event creation."
+        data_type: timestamp_ntz
+
+      - name: order_id
+        description: "Order related to the event, if any."
+        data_type: varchar
+      
+      - name: is_deleted
+        data_type: boolean
+
+      - name: date_load
+        description: "Load date from Fivetran."
+        data_type: timestamp_tz
 
 # Extra stages
   - name: stg_sql_server_dbo__promos_status

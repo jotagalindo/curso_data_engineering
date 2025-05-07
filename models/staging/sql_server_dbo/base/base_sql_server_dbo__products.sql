@@ -5,4 +5,3 @@ SELECT
   inventory,
 {{ add_fivetran_metadata() }}
 FROM {{ source('sql_server_dbo', 'products') }}
-WHERE _fivetran_deleted IS NULL
