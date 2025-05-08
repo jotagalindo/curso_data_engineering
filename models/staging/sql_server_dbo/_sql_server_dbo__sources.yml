@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: sql_server_dbo
     description: "Raw source data from the SQL Server dbo schema, synced via Fivetran."
-    database: alumno10_dev_bronze_db
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB"
     tables:
       - name: addresses
         description: "Contains address details such as ZIP code, country, and state."
