@@ -1,0 +1,141 @@
+version: 2
+
+models:
+  - name: base_sql_server_dbo__promos
+    config:
+      materialized: view
+      contract:
+        enforced: true
+    description: >
+      Contains codes to discount to final ammount
+    columns:
+      - name: promo_id
+        data_type: varchar
+      - name: promo_description
+        data_type: varchar
+      - name: discount
+        data_type: int
+      - name: status_id
+        data_type: varchar
+      - name: status_description
+        data_type: varchar
+      - name: is_deleted
+        data_type: boolean
+      - name: date_load
+        data_type: timestamp_tz
+
+  - name: base_sql_server_dbo__addresses
+    config:
+      materialized: view
+      contract:
+        enforced: true
+    description: >
+      Contains address information including location and postal code.
+    columns:
+      - name: address_id
+        data_type: varchar
+      - name: zipcode
+        data_type: int
+      - name: country
+        data_type: varchar
+      - name: address
+        data_type: varchar
+      - name: state_description
+        data_type: varchar
+      - name: state_id
+        data_type: varchar
+      - name: is_deleted
+        data_type: boolean
+      - name: date_load
+        data_type: timestamp_tz
+
+  - name: base_sql_server_dbo__products
+    description: "Base model for products, adds surrogate key and filters out deleted rows."
+    columns:
+      - name: product_id
+        data_type: varchar
+        description: "Original product ID from source."
+        tests:
+          - not_null
+          - unique
+      - name: price
+        data_type: float
+        description: "Product price in euros."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "price >= 0"
+      - name: name
+        data_type: varchar
+        description: "Product name."
+        tests:
+          - not_null
+      - name: inventory
+        data_type: number
+        description: "Available inventory."
+        tests:
+          - not_null
+      - name: is_deleted
+        data_type: boolean
+      - name: date_load
+        data_type: timestamp_tz
+
+  - name: base_sql_server_dbo__events
+    description: "Base model for events data, adds surrogate key and filters out soft-deleted records."
+    columns:
+      - name: event_id
+        description: "Unique identifier for the event."
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+
+      - name: page_url
+        description: "URL of the page where the event occurred."
+        data_type: varchar
+        tests:
+          - not_null
+
+      - name: event_type
+        description: "Type of the event (e.g., click, view)."
+        data_type: varchar
+        tests:
+          - not_null
+      
+      - name: event_type_id
+        description: "ID of the type of the event (e.g., click, view)."
+        data_type: varchar
+        tests:
+          - not_null
+
+      - name: user_id
+        description: "User associated with the event."
+        data_type: varchar
+        tests:
+          - not_null
+
+      - name: product_id
+        description: "Product involved in the event, if applicable."
+        data_type: varchar
+
+      - name: session_id
+        description: "Session during which the event occurred."
+        data_type: varchar
+        tests:
+          - not_null
+
+      - name: created_at
+        description: "Timestamp when the event occurred."
+        data_type: timestamp_ntz
+        tests:
+          - not_null
+
+      - name: order_id
+        description: "Order associated with the event, if applicable."
+        data_type: varchar
+
+      - name: is_deleted
+        data_type: boolean
+        
+      - name: date_load
+        data_type: timestamp_tz

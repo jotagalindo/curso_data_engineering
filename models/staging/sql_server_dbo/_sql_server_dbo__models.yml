@@ -1,0 +1,137 @@
+version: 2
+
+models:
+  - name: stg_sql_server_dbo__promos
+    config:
+      materialized: view
+      contract:
+        enforced: true
+    description: >
+      Contains codes to discount to final ammount
+    columns:
+      - name: promo_id
+        data_type: varchar
+      - name: promo_description
+        data_type: varchar
+      - name: discount
+        data_type: int
+      - name: status_id
+        data_type: varchar
+      - name: date_load
+        data_type: timestamp_tz
+      - name: is_deleted
+        data_type: boolean
+
+  - name: stg_sql_server_dbo__addresses
+    config:
+      materialized: view
+      contract:
+        enforced: true
+    description: >
+      Contains address information including location and postal code.
+    columns:
+      - name: address_id
+        data_type: varchar
+      - name: zipcode
+        data_type: int
+      - name: country
+        data_type: varchar
+      - name: address
+        data_type: varchar
+      - name: state_id
+        data_type: varchar
+      - name: is_deleted
+        data_type: boolean
+      - name: date_load
+        data_type: timestamp_tz
+
+  - name: stg_sql_server_dbo__products
+    config:
+      materialized: view
+      contract:
+        enforced: true
+    description: >
+      Staging model for cleaned product data with surrogate key.
+    columns:
+      - name: product_id
+        data_type: varchar
+        description: "Original ID from the source table."
+      - name: price
+        data_type: float
+        description: "Product price in euros."
+      - name: name
+        data_type: varchar
+        description: "Product name."
+      - name: inventory
+        data_type: number
+        description: "Available quantity in stock."
+      - name: is_deleted
+        data_type: boolean
+      - name: date_load
+        data_type: timestamp_tz
+        description: "Datetime the record was last synced."
+
+  - name: stg_sql_server_dbo__events
+    description: "Staging model for events data, standardizes and prepares data for analytics."
+    config:
+      materialized: view
+    columns:
+      - name: event_id
+        description: "Original event ID."
+        data_type: varchar
+
+      - name: page_url
+        description: "URL of the page where the event occurred."
+        data_type: varchar
+
+      - name: event_type
+        description: "Type of the event."
+        data_type: varchar
+
+      - name: user_id
+        description: "User associated with the event."
+        data_type: varchar
+
+      - name: product_id
+        description: "Product involved in the event."
+        data_type: varchar
+
+      - name: session_id
+        description: "Session in which the event occurred."
+        data_type: varchar
+
+      - name: created_at
+        description: "Timestamp of event creation."
+        data_type: timestamp_ntz
+
+      - name: order_id
+        description: "Order related to the event, if any."
+        data_type: varchar
+      
+      - name: is_deleted
+        data_type: boolean
+
+      - name: date_load
+        description: "Load date from Fivetran."
+        data_type: timestamp_tz
+
+# Extra stages
+  - name: stg_sql_server_dbo__promos_status
+    description: >
+      Normalized list of promo statuses with a surrogate ID and human-readable description.
+    config:
+      materialized: table
+      contract:
+        enforced: true
+    columns:
+      - name: status_id
+        data_type: varchar
+        description: "Surrogate key representing the promo status (active/inactive)."
+        tests:
+          - unique
+          - not_null
+      - name: status_description
+        data_type: varchar
+        description: "Human-readable status description derived from original promo status ('Active' or 'Inactive')."
+        tests:
+          - not_null
