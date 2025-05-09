@@ -1,9 +1,8 @@
 SELECT
   {{ dbt_utils.generate_surrogate_key(['event_id']) }} AS event_id,
   page_url,
-  {{ dbt_utils.generate_surrogate_key(['event_type']) }} AS event_type_id,
-  INITCAP(REGEXP_REPLACE(event_type, '[^a-zA-Z0-9]+', ' ')) as event_type,
-  user_id,
+  {{ clean_string('event_type', '_') }} AS event_type,
+  {{ dbt_utils.generate_surrogate_key(['user_id']) }} as user_id,
   product_id,
   order_id,
   session_id,

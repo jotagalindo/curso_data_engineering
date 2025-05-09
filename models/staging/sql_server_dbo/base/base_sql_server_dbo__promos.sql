@@ -1,6 +1,6 @@
 SELECT
     {{ dbt_utils.generate_surrogate_key(['promo_id']) }} as promo_id,
-    INITCAP(REGEXP_REPLACE(promo_id, '[^a-zA-Z0-9]+', ' ')) as promo_description,
+    {{ clean_string('promo_id', '_') }} AS promo_description,
     discount,
     {{ dbt_utils.generate_surrogate_key(['status']) }} as status_id,
     status as status_description,

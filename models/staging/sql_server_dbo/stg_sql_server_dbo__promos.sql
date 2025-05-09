@@ -1,7 +1,7 @@
 WITH base AS (
     SELECT
     promo_id,
-    promo_description,
+    INITCAP({{ clean_string('promo_description', ' ') }}) as promo_description,
     discount,
     status_id,
     is_deleted,
@@ -16,7 +16,7 @@ FROM base
 UNION ALL
 
 SELECT
-  {{ dbt_utils.generate_surrogate_key(["'no-promo'"]) }} as promo_id,
+  {{ dbt_utils.generate_surrogate_key(["'no_promo'"]) }} as promo_id,
   'No Promo' as promo_description,
   0 as discount,
   {{ dbt_utils.generate_surrogate_key([1]) }} as status_id,
