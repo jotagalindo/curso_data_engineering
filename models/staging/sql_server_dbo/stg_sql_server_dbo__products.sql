@@ -1,7 +1,23 @@
-WITH base AS (
-  SELECT * FROM {{ ref('base_sql_server_dbo__products') }}
+with 
+
+source as (
+
+    select * from {{ source('sql_server_dbo', 'products') }}
+
+),
+
+renamed as (
+
+    select
+        product_id,
+        price,
+        name,
+        inventory,
+        _fivetran_deleted,
+        _fivetran_synced
+
+    from source
+
 )
 
-SELECT
-  *
-FROM base
+select * from renamed
